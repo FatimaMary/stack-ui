@@ -20,7 +20,7 @@ import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
 import AssignmentReturnOutlinedIcon from '@mui/icons-material/AssignmentReturnOutlined';
 import { useState } from 'react';
 import axios from 'axios';
-import { Description } from '@mui/icons-material';
+import './ProductAdd.css';
 
 
 const drawerWidth = 200;
@@ -150,13 +150,17 @@ export default function ProductAdd() {
         <Toolbar />
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} style={{display: 'flex', justifyContent: 'space-between', margin: '10px'}}>
         <div className='addproduct-container1'>
-        <Grid item xs={6}>
+        <Grid item xs={6} className='container1-grid1'>
             <h4>Description</h4>
-            <div>
-                <p>Product Name</p>
-                <input name='name' value={productName} onChange={(e) => setProductName(e.target.value)}/>
+            <div className='container1-grid1-div'>
+              {/* <div className='container1-grid1-subdiv'> */}
+                <p className='container1-grid1-p'>Product Name</p>
+                <input className='container1-grid1-input' name='name' value={productName} onChange={(e) => setProductName(e.target.value)}/>
+              {/* </div> */}
+              <div>
                 <p>Business Description</p>
                 <textarea name='description' value={description} onChange={(e) => setDescription(e.target.value)}/>
+              </div>
             </div>
         </Grid>
         <Grid item xs={6} >
