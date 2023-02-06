@@ -106,6 +106,33 @@ export default function ProductAdd() {
     });
   };
 
+  const [fileList, setFileList] = useState([
+    {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+  ]);
+  const onChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
+  const onPreview = async (file) => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -148,7 +175,7 @@ export default function ProductAdd() {
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
       >
         <Toolbar />
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} style={{display: 'flex', justifyContent: 'space-between', margin: '10px'}}>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} style={{display: 'flex', justifyContent: 'space-around', margin: '10px'}}>
         <div className='addproduct-container1'>
         <Grid item xs={6} className='container1-grid1'>
             <h4>Description</h4>
@@ -158,16 +185,16 @@ export default function ProductAdd() {
                 <input className='container1-grid1-input' name='name' value={productName} onChange={(e) => setProductName(e.target.value)}/>
               {/* </div> */}
               <div>
-                <p>Business Description</p>
-                <textarea name='description' value={description} onChange={(e) => setDescription(e.target.value)}/>
+                <p className='container1-grid1-p'>Business Description</p>
+                <textarea className='container1-grid1-input' name='description' value={description} onChange={(e) => setDescription(e.target.value)}/>
               </div>
             </div>
         </Grid>
-        <Grid item xs={6} >
+        <Grid item xs={6} className='container1-grid1' >
             <h4>Category</h4>
-            <div>
-                <p>Product Category</p>
-                <select name='category' value={category} onChange={(e) => setCategory(e.target.value)}>
+            <div className='container1-grid1-div' >
+                <p className='container1-grid1-p'>Product Category</p>
+                <select className='container1-grid1-input' name='category' value={category} onChange={(e) => setCategory(e.target.value)}>
                 {categories.map((options) => (
                 <option key={options.value} value={options.value}>
                   {options.text}
@@ -175,7 +202,7 @@ export default function ProductAdd() {
               ))}
                 </select>
                 <p>Product Category</p>
-                <select name='product' value={product} onChange={(e) => setProduct(e.target.value)}>
+                <select className='container1-grid1-input' name='product' value={product} onChange={(e) => setProduct(e.target.value)}>
                 {products.map((options) => (
                 <option key={options.value} value={options.value}>
                   {options.text}
@@ -184,69 +211,85 @@ export default function ProductAdd() {
                 </select>
             </div>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} className='container1-grid1' >
             <h4>Inventary</h4>
-            <div>
+            <div className='container1-grid1-div'>
                 <div>
-                    <p>Quantity</p>
-                    <input name='quantity' value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                    <p className='container1-grid1-p'>Quantity</p>
+                    <input className='container1-grid1-input' name='quantity' value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
                 </div>
                 <div>
-                    <p>SKU(optional)</p>
-                    <input name='sku' value={sku} onChange={(e) => setSku(e.target.value)}/>
+                    <p className='container1-grid1-p'>SKU(optional)</p>
+                    <input className='container1-grid1-input' name='sku' value={sku} onChange={(e) => setSku(e.target.value)}/>
                 </div>
             </div>
         </Grid>
         </div>
         <div className='addproduct-container2'>
-        <Grid item xs={6}>
-           <h4>Product Images<HelpOutlineIcon/></h4>
-           <div></div>
+        <Grid item xs={6} className='container1-grid1'>
+           <h4>Product Images<HelpOutlineIcon style={{ fontSize: '12px'}}/></h4>
+           <div className='container1-grid1-div'>
+           {/* <Item sx={{height: 150, }}> */}
+          <ImgCrop rotate>
+            <Upload
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              listType="picture-card"
+              fileList={fileList}
+              onChange={onChange}
+              onPreview={onPreview}
+            >
+              {fileList.length < 5 && '+ Upload'}
+            </Upload>
+          </ImgCrop>
+          {/* </Item> */}
+           </div>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} className='container1-grid1' >
             <h4>Shipping and Delivery</h4>
-            <div>
+            <div className='container1-grid1-div'>
                 <div>
-                    <p>Items Weight</p>
-                    <input name='weight' value={weight} onChange={(e) => setWeight(e.target.value)}/>
+                    <p className='container1-grid1-p'>Items Weight</p>
+                    <input className='container1-grid1-input' name='weight' value={weight} onChange={(e) => setWeight(e.target.value)}/>
                 </div>
                 <div>
                     <h4>Package Size(The Package you use to ship your product)</h4>
-                    <div>
-                        <div>
-                            <p>Length</p>
+                    <div className='addcontainer2-subdiv'>
+                        <div className='length-div'>
+                            <p className='container1-grid1-p'>Length</p>
                             <input name='length' value={length} onChange={(e) => setLength(e.target.value)}/>
                         </div>
-                        <div>
-                            <p>Breadth</p>
+                        <div className='breadth-div'>
+                            <p className='container1-grid1-p'>Breadth</p>
                             <input name='breadth' value={breadth} onChange={(e) => setBreadth(e.target.value)}/>
                         </div>
-                        <div>
-                            <p>Width</p>
+                        <div className='width-div'>
+                            <p className='container1-grid1-p'>Width</p>
                             <input name='width' value={width} onChange={(e) => setWidth(e.target.value)}/>
                         </div>
                     </div>
                 </div>
             </div>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} className='container1-grid1' >
           <h4>Pricing</h4>
-          <div>
+          <div className='container1-grid1-div'>
             <div>
-                <p>Price</p>
-                <input name='price' value={price} onChange={(e) => setPrice(e.target.value)}/>
+                <p className='container1-grid1-p'>Price</p>
+                <input className='container1-grid1-input' name='price' value={price} onChange={(e) => setPrice(e.target.value)}/>
             </div>
             <div>
-                <p>Compare at Price<HelpOutlineIcon/></p>
-                <input name='compareprice' value={compareprice} onChange={(e) => setCompareprice(e.target.value)}/>
+                <p className='container1-grid1-p'>Compare at Price<HelpOutlineIcon style={{ fontSize: '12px'}}/></p>
+                <input className='container1-grid1-input' name='compareprice' value={compareprice} onChange={(e) => setCompareprice(e.target.value)}/>
             </div>
           </div>
         </Grid>
-        <Grid item xs={6}> 
-            <button onClick={clearEntries}>Discard</button>
-            <button onClick={handleSubmit}>Add Product</button>
-        </Grid>
         </div>
+        <Grid item xs={6} style={{display:'flex', justifyContent: 'space-between', marginTop: '10px'}}> 
+          {/* <div className='btn-div'> */}
+            <button className='discard-btn' onClick={clearEntries}>Discard</button>
+            <button className='submit-btn' onClick={handleSubmit}>Add Product</button>
+          {/* </div> */}
+        </Grid>
       </Grid>
       </Box>
     </Box>

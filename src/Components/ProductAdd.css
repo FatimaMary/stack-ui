@@ -2,14 +2,13 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 45%;
-    border-right: 2px solid red;
 }
 
 .container1-grid1-div{
     box-sizing: border-box;
     border: 1px solid rgba(120, 118, 118, .5);
     width: 400px;
+    padding: 5px;
 }
 
 .container1-grid1-p {
@@ -24,4 +23,48 @@
     border-radius: 5px;
     outline: none;
     border: 1px solid rgba(120, 118, 118, .5);
+}
+
+.addproduct-container2{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-right: 10px;
+    margin-right: 10px;
+}
+
+.addcontainer2-subdiv{
+    display: flex;
+    justify-content: space-between;
+}
+.length-div > input, .breadth-div  > input, .width-div > input{
+    width: 125px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(120, 118, 118, .5);
+    outline: none;
+}
+
+h4{
+    margin-bottom: 0px;
+}
+
+.discard-btn{
+    padding: 10px;
+    border-radius: 10px;
+    outline: none;
+    width: 100px;
+    border: 1px solid rgba(120, 118, 118, .5);
+    background: none;
+}
+
+.submit-btn {
+    padding: 10px;
+    border-radius: 10px;
+    outline: none;
+    background-color: blue;
+    color: white;
+    border: 1px solid blue;
+    letter-spacing: 1px;
+    width: 150px;
 }
