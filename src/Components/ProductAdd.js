@@ -13,10 +13,6 @@ import Grid from '@mui/material/Grid';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import NativeSelect from '@mui/material/NativeSelect';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
-import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
 import AssignmentReturnOutlinedIcon from '@mui/icons-material/AssignmentReturnOutlined';
 import { useState } from 'react';
 import axios from 'axios';
@@ -141,9 +137,13 @@ export default function ProductAdd() {
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
       >
         <Toolbar>
-          <Typography variant="h4" noWrap component="div">
-            <div><AssignmentReturnOutlinedIcon/>Back To Product List</div>
-           <div>Add New Product</div>
+          <Typography variant="h6" noWrap component="div" style={{ display: 'flex', justifyContent: 'center', nflexDirection:'row'}}>
+            <div style={{fontSize: '36px'}}><AssignmentReturnOutlinedIcon/></div>
+            {/* <div> <-</div> */}
+            <div>
+              <div>Back To Product List</div>
+              <div>Add New Product</div>
+           </div>
           </Typography>
         </Toolbar> 
       </AppBar>
@@ -238,7 +238,7 @@ export default function ProductAdd() {
               onChange={onChange}
               onPreview={onPreview}
             >
-              {fileList.length < 5 && '+ Upload'}
+              {fileList.length < 10 && '+ Upload'}
             </Upload>
           </ImgCrop>
           {/* </Item> */}
@@ -283,9 +283,15 @@ export default function ProductAdd() {
             </div>
           </div>
         </Grid>
+        {/* <Grid item xs={6} > 
+          <div className='btn-div' style={{display:'flex', justifyContent: 'space-between', marginTop: '10px'}}>
+            <button className='discard-btn' onClick={clearEntries}>Discard</button>
+            <button className='submit-btn' onClick={handleSubmit}>Add Product</button>
+          </div>
+        </Grid> */}
         </div>
         <Grid item xs={6} style={{display:'flex', justifyContent: 'space-between', marginTop: '10px'}}> 
-          {/* <div className='btn-div'> */}
+            {/* <div className='btn-div'>  */}
             <button className='discard-btn' onClick={clearEntries}>Discard</button>
             <button className='submit-btn' onClick={handleSubmit}>Add Product</button>
           {/* </div> */}

@@ -1,12 +1,14 @@
 import './App.css';
-import AddProduct from './Components/AddProduct';
+import CheckIn from './Components/CheckIn';
+import NewPartsEntry from './Components/NewPartsEntry';
 import ProductAdd from './Components/ProductAdd';
 
 function App() {
   return (
     <div className="App">
-      {/* <AddProduct/> */}
-      <ProductAdd/>
+      {/* <ProductAdd/> */}
+      {/* <NewPartsEntry/> */}
+      <CheckIn/>
     </div>
   );
 }
