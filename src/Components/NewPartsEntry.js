@@ -38,9 +38,25 @@ function NewPartsEntry() {
           PackingStandard: packingStandard
         }).then((res) => {
           console.log(res);
-        //   navigate("/table")
+          setCustomer("");
+          setPartNo("");
+          setDescription("");
+          setLocation("");
+          setMinstock("");
+          setMaxstock("");
+          setPackingStandard("");
         });
     }
+
+    const clearEntries = () => {
+        setCustomer("");
+        setPartNo("");
+        setDescription("");
+        setLocation("");
+        setMinstock("");
+        setMaxstock("");
+        setPackingStandard("");
+      }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -122,7 +138,7 @@ function NewPartsEntry() {
                 </select>
             </div>
             <div className='container1-grid1-div'>
-                <button className='discard-btn'>Discard</button>
+                <button className='discard-btn' onClick={clearEntries}>Discard</button>
                 <button className='submit-btn' onClick={handleSubmit}>submit</button>
             </div>
         </div>

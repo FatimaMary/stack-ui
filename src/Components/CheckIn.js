@@ -24,16 +24,15 @@ function CheckIn() {
         position="fixed"
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
       >
-        <Toolbar>
+        {/* <Toolbar>
           <Typography variant="h6" noWrap component="div" style={{ display: 'flex', justifyContent: 'center', nflexDirection:'row'}}>
             <div style={{fontSize: '36px'}}><AssignmentReturnOutlinedIcon/></div>
-            {/* <div> <-</div> */}
             <div>
               <div>Back To Product List</div>
               <div>Add New Product</div>
            </div>
           </Typography>
-        </Toolbar> 
+        </Toolbar>  */}
       </AppBar>
       <Drawer
         sx={{
@@ -94,7 +93,7 @@ function CheckIn() {
             <p>Bins to Checkin</p>
             <input readOnly/>
         </div>
-        <div >
+        <div>
             <button>Generate Barcodes</button>
             <button>Print Barcodes</button>
             <button>Complete Checkin</button>
