@@ -1,106 +1,97 @@
-import { Box} from '@mui/material';
-import React from 'react';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import AssignmentReturnOutlinedIcon from '@mui/icons-material/AssignmentReturnOutlined';
-import { useState } from 'react';
 import axios from 'axios';
-import './ProductAdd.css';
-
-const drawerWidth = 200;
+import React from 'react'
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 function CheckIn() {
+  const [data, setData] = React.useState([]);
+    const [customer, setCustomer] = useState();
+    const [partNo, setPartNo] = useState();
+    const [description, setDescription] = useState();
+    const [location, setLocation] = useState();
+    const [packingStandard, setPackingStandard] = useState();
+    const [binCount, setBinCount] = useState();
+
+    useEffect(() => {
+      
+      axios.get("http://localhost:2318/newentry").then((response) => {
+            console.log("get data: "+ JSON.stringify(response.data));
+            setData(response.data);
+            // console.log("Selectd part no: " + JSON.stringify(data.CustomerPartNo))
+      // axios.get("")
+      axios.get(`http://localhost:2318/newentry/details/${partNo}`). then((response) => {
+        setCustomer(response.customer);
+        setLocation(response.location);
+        setDescription(response.description);
+        setPackingStandard(response.packingStandard);
+        console.log("data get via part no: " + response.data);
+      }) })
+    }, []);
+
+    const handleCheckIn = (e) => {
+      e.preventDefault();
+      axios.post("http://localhost:2318/checkin", {
+        CustomerPartNo: partNo,
+        Action: `checkin`,
+        BinCount: binCount,
+        Location: location,
+        // StockId: parseInt(Id),
+      }).then((response) => {
+        setPartNo("");
+        setBinCount("");
+        setLocation("");
+        setPackingStandard("");
+        setDescription("");
+      })
+    }
+
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      >
-        {/* <Toolbar>
-          <Typography variant="h6" noWrap component="div" style={{ display: 'flex', justifyContent: 'center', nflexDirection:'row'}}>
-            <div style={{fontSize: '36px'}}><AssignmentReturnOutlinedIcon/></div>
-            <div>
-              <div>Back To Product List</div>
-              <div>Add New Product</div>
-           </div>
-          </Typography>
-        </Toolbar>  */}
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="permanent"
-        anchor="left"
-      >
-        <Toolbar />
-        <List >
-          {['Dashboard', 'Products', 'Checkin', 'Checkout', 'Reports'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-      >
-        <Toolbar />
     <div className='container1-grid1'>
+      <h2>CheckIn</h2>
         <div className='container1-grid1-div'>
             <p>Customer Part No</p>
-            <select>
+            <select  className='container-input' value={partNo} onChange={(e) => setPartNo(e.target.value)} >
                 <option>Customer Part No</option>
-                <option></option>
+                {data.map((options) => (
+              <option key={options.id} value={options.CustomerPartNo}>
+                {options.CustomerPartNo}
+              </option>
+            ))}
             </select>
         </div>
         <div className='container1-grid1-div'>
             <p>Description</p>
-            <select>
+            <select className='container-input' value={description} onChange={(e) => setDescription(e.target.value)}>
                 <option>Description</option>
                 <option></option>
+                {/* {description.map((options) => (
+              <option key={options.Id} value={options.description}>
+                {options.description}
+              </option>
+            ))} */}
             </select>
         </div>
         <div className='container1-grid1-div'>
             <p>Packing Standard</p>
-            <input readOnly/>
+            <input className='container-input' value={packingStandard} onChange={(e) => setPackingStandard(e.target.value)} re />
         </div>
         <div className='container1-grid1-div'>
             <p>Customer</p>
-            <input readOnly/>
+            <input className='container-input' value={customer} onChange={(e) => setCustomer(e.target.value)} readOnly/>
         </div>
         <div className='container1-grid1-div'>
             <p>Location</p>
-            <input readOnly/>
+            <input className='container-input' value={location} onChange={(e) => setLocation(e.target.value)} readOnly/>
         </div>
         <div className='container1-grid1-div'>
-            <p>Bins to Checkin</p>
-            <input readOnly/>
+            <p>{packingStandard} to Checkin</p>
+            <input className='container-input' value={binCount} onChange={(e) => setBinCount(e.target.value)} />
         </div>
-        <div>
-            <button>Generate Barcodes</button>
-            <button>Print Barcodes</button>
-            <button>Complete Checkin</button>
+        <div className='container-btn-div'>
+            <button className='checkin-btn' onClick={handleCheckIn} >CheckIn</button>
+            <button className='barcode-btn'>Print Barcode</button>
         </div>
     </div>
-    </Box>
-    </Box>
   )
 }
 

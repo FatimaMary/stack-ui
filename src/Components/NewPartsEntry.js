@@ -10,13 +10,22 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import AssignmentReturnOutlinedIcon from '@mui/icons-material/AssignmentReturnOutlined';
+import MessageIcon from '@mui/icons-material/Message';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import LeaderboardTwoToneIcon from '@mui/icons-material/LeaderboardTwoTone';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import LogoutIcon from '@mui/icons-material/Logout';
+import HelpIcon from '@mui/icons-material/Help';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { useState } from 'react';
 import axios from 'axios';
 import './ProductAdd.css';
+import { ListItemIcon } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 200;
 
-function NewPartsEntry() {
+function NewPartsEntry(props) {
     const [customer, setCustomer] = useState();
     const [partNo, setPartNo] = useState();
     const [description, setDescription] = useState();
@@ -24,6 +33,7 @@ function NewPartsEntry() {
     const [minstock, setMinstock] = useState();
     const [maxstock, setMaxstock] = useState();
     const [packingStandard, setPackingStandard] = useState();
+    // const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -57,6 +67,66 @@ function NewPartsEntry() {
         setMaxstock("");
         setPackingStandard("");
       }
+      const { window } = props;
+      const [mobileOpen, setMobileOpen] = React.useState(false);
+      const [collapsed, setCollapsed] = useState(false);
+    
+      const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+      };
+    
+      const Drawer = () => {
+        const itemsList = [
+            {
+                text: "Dashboard",
+                icon: <DashboardIcon/>
+            },
+            {
+                text: "Checkin",
+                icon: <LeaderboardTwoToneIcon />
+            },
+            {
+                text: "Checkout Utility",
+                icon: <InboxIcon/>
+            },
+            {
+                text: "Notification",
+                icon: <NotificationsIcon/>
+            },
+            {
+                text: "Message",
+                icon: <MessageIcon/>
+            },
+            {
+                text: "Logout",
+                icon: <LogoutIcon/>
+            },
+            {
+                text: "Help",
+                icon: <HelpIcon/>
+            }
+        ]
+        return (
+        <div >
+          <Toolbar />
+          {/* <Divider /> */}
+          <List >
+             {itemsList.map((item, index) => {
+                const {text, icon } = item;
+                return (
+                    <ListItem button key={text}>
+                        {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                        <ListItemText primary={text} />
+                    </ListItem>
+                )
+             })}
+            </List>
+        </div>
+        )
+              };
+    
+      const container = window !== undefined ? () => window().document.body : undefined;
+    
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -65,16 +135,13 @@ function NewPartsEntry() {
         position="fixed"
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
       >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div" style={{ display: 'flex', justifyContent: 'center', nflexDirection:'row'}}>
-            <div style={{fontSize: '36px'}}><AssignmentReturnOutlinedIcon/></div>
-            {/* <div> <-</div> */}
-            <div>
-              <div>Back To Product List</div>
-              <div>Add New Product</div>
-           </div>
-          </Typography>
-        </Toolbar> 
+        <Toolbar style={{ background: 'white'}}>
+          <Typography variant="h6"  style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{color: 'blue'}}>
+              <p>Add New</p>
+            </div>
+          </Typography >
+        </Toolbar > 
       </AppBar>
       <Drawer
         sx={{
@@ -89,7 +156,7 @@ function NewPartsEntry() {
         anchor="left"
       >
         <Toolbar />
-        <List >
+        {/* <List >
           {['Dashboard', 'Products', 'Checkin', 'Checkout', 'Reports'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
@@ -97,7 +164,7 @@ function NewPartsEntry() {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </Drawer>
       <Box
         component="main"
