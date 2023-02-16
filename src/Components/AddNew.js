@@ -46,6 +46,7 @@ function AddNew() {
 
   return (
     <div className='container1-grid1'>
+        <h2>Add New Product</h2>
             <div className='container1-grid1-div'>
                 <p className='container1-grid1-p'>Customer</p>
                 <input  className='container1-grid1-input' type='text' name='customer' value={customer} onChange={(e) => setCustomer(e.target.value)} />

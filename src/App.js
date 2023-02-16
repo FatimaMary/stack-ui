@@ -3,6 +3,7 @@ import './App.css';
 import AddNew from './Components/AddNew';
 import CheckIn from './Components/CheckIn';
 import CheckInUi from './Components/CheckinUi';
+import CheckOut from './Components/CheckOut';
 import Dashboard from './Components/Dashboard';
 import NewPartsEntry from './Components/NewPartsEntry';
 import ProductAdd from './Components/ProductAdd';
@@ -22,6 +23,7 @@ function App() {
           <Route path='/' element={<Dashboard/>}/>
           <Route path='/addnew' element={<AddNew/>} />
           <Route path='/checkin' element={<CheckIn/>} />
+          <Route path='/checkout' element={<CheckOut/>} />
         </Routes>
       </Sidebar>
     </BrowserRouter>

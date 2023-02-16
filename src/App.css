@@ -32,7 +32,8 @@ main {
 .bars{
   display: flex;
   font-size: 25px;
-  margin-left: 5s0px;
+  margin-left: 50px;
+  /* margin-right: 50px; */
 }
 .link{
   display: flex;
@@ -55,4 +56,20 @@ main {
 }
 .icon, .link_text {
   font-size: 20px;
+}
+.addnew-btn{
+  margin: 10px;
+  padding: 5px;
+  border-radius: 15px;
+  outline: none;
+  width: 100px;
+  font-size: 16px;
+  background: #2e51b1;
+  border: 2px solid #2e51b1;
+  color: white;
+  letter-spacing: 1px;
+}
+.addbtn-div{
+  display: flex;
+  justify-content: flex-end;
 }
