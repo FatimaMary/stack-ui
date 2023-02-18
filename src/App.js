@@ -8,6 +8,7 @@ import Dashboard from './Components/Dashboard';
 import NewPartsEntry from './Components/NewPartsEntry';
 import ProductAdd from './Components/ProductAdd';
 import Sidebar from './Components/Sidebar';
+import Utility from './Components/Utility';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path='/addnew' element={<AddNew/>} />
           <Route path='/checkin' element={<CheckIn/>} />
           <Route path='/checkout' element={<CheckOut/>} />
+          <Route path='/utility' element={<Utility/>} />
         </Routes>
       </Sidebar>
     </BrowserRouter>

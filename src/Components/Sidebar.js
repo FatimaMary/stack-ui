@@ -30,7 +30,7 @@ const Sidebar = ({children}) => {
             icon:<LogoutIcon/>
         },
         {
-            path:"/addnew",
+            path:"/utility",
             name:"Utility",
             icon:<SettingsIcon/>
         },

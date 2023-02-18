@@ -50,7 +50,7 @@ export default function CheckOut() {
             <StyledTableCell align="right">Calories</StyledTableCell>
             <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
             <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="right">to Checkout</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
