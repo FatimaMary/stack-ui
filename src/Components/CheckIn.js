@@ -11,59 +11,64 @@ import Select from 'react-select';
 function CheckIn() {
   const [customerPartDetails, setCustomerPartDetails] = useState([]);
     const [customer, setCustomer] = useState();
+    const [partNo, setPartNo] = useState();
     const [selectedPartNo, setSelectedPartNo] = useState();
     const [description, setDescription] = useState();
     const [location, setLocation] = useState();
     const [packingStandard, setPackingStandard] = useState();
     const [binCount, setBinCount] = useState();
     const [selectdId, setSelectdId] = useState();
-    const [partNumberArray, setPartNumberArray] = useState([]);
-    const navigate = useNavigate();
-    // const [searchParam] = useSearchParams();
-    // const partNum = searchParam.get("partNo")
-
-    // const optionsList = () => {
-    //   axios.get("http://localhost:2318/entry/customerPartNo").then((response) => {
-    //     console.log(response.data)
-    //     setPartNumber(response.data);
-    //   })
-    // }
-    
+    const navigate = useNavigate();    
 
     useEffect(() => {
       axios.get("http://localhost:2318/entry").then((response) => {
             setCustomerPartDetails(response.data);
-            // setPartNumberArray(response.data.CustomerPartNo)
        })
-      //  axios.get("http://localhost:2318/entry/customerPartNo").then((response) => {
-      //   console.log(response.data)
-      //   setPartNumberArray(response.data);})
     }, []);
 
-    const handleChange = (e, value) => {
-      setSelectedPartNo(e.target.value);
-      console.log("data get via part no: " + JSON.stringify(e.target.value));
+    // const handleChange = (e, data) => {
+    //   setSelectedPartNo(data);
+    //   console.log("data get via part no: " + JSON.stringify(data));
+    //   customerPartDetails.filter((singleCustomerPartDetail) => {
+    //       if(data === singleCustomerPartDetail.CustomerPartNo) {
+    //         setDescription(singleCustomerPartDetail.Description)
+    //         setCustomer(singleCustomerPartDetail.Customer);
+    //         setPackingStandard(singleCustomerPartDetail.PackingStandard);
+    //         setLocation(singleCustomerPartDetail.Location);
+    //         setSelectdId(singleCustomerPartDetail.Id)
+    //           console.log("Description: " + singleCustomerPartDetail.Description)
+    //           console.log("ID: "+singleCustomerPartDetail.Id);
+    //       } else if  (e.target.value === singleCustomerPartDetail.Description) {
+    //         setSelectedPartNo(singleCustomerPartDetail.CustomerPartNo)
+    //         setCustomer(singleCustomerPartDetail.Customer);
+    //         setPackingStandard(singleCustomerPartDetail.PackingStandard);
+    //         setLocation(singleCustomerPartDetail.Location);
+    //         setSelectdId(singleCustomerPartDetail.Id)
+    //       }
+    //   })
+    // }
+
+    function handleSelect(data) {
+      setPartNo(data);
+      setSelectedPartNo(data.value);
+      console.log(data);
+      console.log("selected part no: " + JSON.stringify(selectedPartNo))
       customerPartDetails.filter((singleCustomerPartDetail) => {
-          if(e.target.value === singleCustomerPartDetail.CustomerPartNo) {
-            setDescription(singleCustomerPartDetail.Description)
-            setCustomer(singleCustomerPartDetail.Customer);
-            setPackingStandard(singleCustomerPartDetail.PackingStandard);
-            setLocation(singleCustomerPartDetail.Location);
-            setSelectdId(singleCustomerPartDetail.Id)
-              console.log("Description: " + singleCustomerPartDetail.Description)
-              console.log("ID: "+singleCustomerPartDetail.Id);
-          } if (e.target.value === singleCustomerPartDetail.Description) {
-            setSelectedPartNo(singleCustomerPartDetail.CustomerPartNo)
-            setCustomer(singleCustomerPartDetail.Customer);
-            setPackingStandard(singleCustomerPartDetail.PackingStandard);
-            setLocation(singleCustomerPartDetail.Location);
-            setSelectdId(singleCustomerPartDetail.Id)
-          }
-      })
+        if(data.value === singleCustomerPartDetail.CustomerPartNo) {
+          setDescription(singleCustomerPartDetail.Description)
+          setCustomer(singleCustomerPartDetail.Customer);
+          setPackingStandard(singleCustomerPartDetail.PackingStandard);
+          setLocation(singleCustomerPartDetail.Location);
+          setSelectdId(singleCustomerPartDetail.Id)
+        }})
     }
 
-    const optionsList = customerPartDetails.map((opt) => ({label: opt.CustomerPartNo , value: opt.CustomerPartNo}));
-    console.log("Options List:" + JSON.stringify(optionsList))
+    const optionsList = customerPartDetails.map((opt) => ({
+      label: opt.CustomerPartNo , 
+      value: opt.CustomerPartNo,
+    }
+    ))
+    // console.log("Options List:" + JSON.stringify(optionsList))
 
     const handleCheckIn = (e) => {
       e.preventDefault();
@@ -77,6 +82,7 @@ function CheckIn() {
       }).then((response) => {
         console.log(response);
         setSelectedPartNo("");
+        setPartNo("");
         setCustomer("");
         setBinCount("");
         setLocation("");
@@ -85,15 +91,20 @@ function CheckIn() {
       })
       
     }
-    
+    console.log("selected part no: "+selectedPartNo)
   return (
     <div className='container1-grid1'>
       <h2>CheckIn</h2>
         <div className='container1-grid1-div'>
             <p>Customer Part No</p>
-            <Select  className='container-input' value={selectedPartNo} 
-            onChange={handleChange} 
+            <Select
+              className='container-select'
+              placeholder="select Part No"
+              value={partNo} 
+              onChange={handleSelect}
+              // onChange={(e) => setSelectedPartNo(e.value)} 
                options = {optionsList} 
+               isSearchable={true}
             />
             {/* <select className='container-input' value={selectedPartNo} 
             onChange={handleChange}>
@@ -107,8 +118,9 @@ function CheckIn() {
         </div>
         <div className='container1-grid1-div'>
             <p>Description</p>
-            <select className='container-input' value={description} onChange={handleChange}
-            // onChange={(e) => setDescription(e.target.value)}
+            <select className='container-input' value={description} 
+            // onChange={handleChange}
+            onChange={(e) => setDescription(e.target.value)}
             >
                 <option>Description</option>
                 {customerPartDetails.map((singleDescription) => (

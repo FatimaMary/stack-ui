@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-
+import './ProductAdd.css'
 const getBackgroundColor = (color, mode) =>
   mode === "dark" ? darken(color, 0.6) : lighten(color, 0.6);
 
@@ -29,15 +29,17 @@ export default function Dashboard() {
 
   useEffect(() => {
     axios.get("http://localhost:2318/entry").then((response) => {
+      console.log("TableData: " + JSON.stringify(response.data));
       setTableData(response.data);
     })
   }, []);
-  console.log("tabledata " + JSON.stringify(tableData))
-
+  // console.log("tabledata " + JSON.stringify(tableData))
 
   const GotoAdd = () => {
     navigate("/addnew")
   }
+  
+
   return (
     <div style={{ height: 500, width: "100%" }}>
       <div className="addbtn-div">
@@ -119,6 +121,11 @@ export default function Dashboard() {
             color: "#1a3e72",
             fontWeight: "600",
           },
+          "& .super-app.yellow": {
+            backgroundColor: "yellow",
+            color: "#1a3e72",
+            fontWeight: "600",
+          },
         }}
       >
         <DataGrid
@@ -182,32 +189,44 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 });
 
 const columns = [
-  { field: "sno", headerName: "S.No", width: 100, 
+  { field: "Id", headerName: "S.No", width: 100,
+  filterable: false, renderCell: (index) => index.api.getRowIndex(index.row.Id) + 1,
   // editable: true 
 },
-  { field: "customer", headerName: "Customer", width: 180 },
-  { field: "customerpartno", headerName: "Customer Part No", width: 180 },
+  { field: "Customer", headerName: "Customer", width: 180 },
+  { field: "CustomerPartNo", headerName: "Customer Part No", width: 150 },
   {
-    field: "description",
+    field: "Description",
     headerName: "Description",
-    type: "text",
-    width: 150,
+    type: "string",
+    width: 180,
     // 
   },
   {
-    field: "location",
+    field: "Location",
     headerName: "Location",
-    type: "text",
-    width: 90,
+    type: "string",
+    width: 90,cellStyle: {color: 'red', 'background-color': 'green'}
   },
   {
-    field: "minstock",
+    field: "MinStock",
     headerName: "Min Stock",
     type: "number",
     width: 90,
-  },
+    cellClassName: (params) => {
+      if (params.value == null) {
+        return "";
+      }
+
+      return clsx("super-app", {
+        blue: params.value > 300,
+        red: params.value < 350,
+        green: params.value > 400,
+      });
+    },
+  }, 
   {
-    field: "maxstock",
+    field: "MaxStock",
     headerName: "Max Stock",
     type: "number",
     width: 90,
@@ -217,6 +236,7 @@ const columns = [
     headerName: "Current Stock",
     type: "number",
     width: 100,
+    editable: true
   },
   {
     field: "noofbins",
@@ -232,12 +252,16 @@ const columns = [
     cellClassName: (params) => {
       if (params.value == null) {
         return "";
+      } else if(params.value < MinStock.value) {
+        return clsx("super-app", {
+          red
+        })
       }
 
       return clsx("super-app", {
-        blue: params.value > 100000,
-        red: params.value < 100000,
-        green: params.value > 1000000,
+        red: params.value < MinStock.value,
+        yellow: params.value <= (MinStock.value + 10%(MinStock)),
+        green: params.value >= (MinStock.value + 10%(MinStock)),
       });
     },
     // 
@@ -264,38 +288,39 @@ const columns = [
     
   // },
   // {
-  //   field: "percentage",
-  //   headerName: "Percentage",
+  //   field: "MinStock",
+  //   headerName: "Min Stock",
   //   type: "number",
+  //   editable: true,
   //   width: 90,
   //   // cellRenderer: CustomCellRenderer,
   //   cellClassName: (params) => {
-  //     if (params.value === 60) {
+  //     if (params.value >= 60) {
   //       return (
   //         // <span style={{ bgcolor: "blue", width: `${params.value}%` }}>
   //         <div style={{ background: "red", width: "50%" }}>{params.value}</div>
   //       );
   //     }
   //   },
-  //   // cellClassName: (params) => {
-  //   //   if (params.value == null) {
-  //   //     return "";
-  //   //   }
+    // cellClassName: (params) => {
+    //   if (params.value == null) {
+    //     return "";
+    //   }
 
-  //   //   return clsx("super-app-theme", {
-  //   //     60: params.value === 60,
+    //   return clsx("super-app-theme", {
+    //     60: params.value === 60,
 
-  //   //   });
-  //   // },
-  //   // cellClassName: ({ value: percentage }) => {
-  //   //   if (percentage > 60) {
-  //   //     return (
-  //   //       <div style={{ backgroundColor: "red", width: `${percentage}%` }}>
-  //   //         {percentage}
-  //   //       </div>
-  //   //     );
-  //   //   }
-  //   // },
+    //   });
+    // },
+    // cellClassName: ({ value: percentage }) => {
+    //   if (percentage > 60) {
+    //     return (
+    //       <div style={{ backgroundColor: "red", width: `${percentage}%` }}>
+    //         {percentage}
+    //       </div>
+    //     );
+    //   }
+    // },
   // },
   // {
   //   field: "isfilled",
@@ -348,81 +373,3 @@ const columns = [
   // //   },
   // // },
 ];
-
-// const rows = [
-//   {
-//     id: 1,
-//     name: "Raja Traders",
-//     city: "Virudhunagar",
-//     commodity: "PVC Pipe",
-//     price: 120,
-//     quantity: 1000,
-//     total: 120000,
-//     dateCreated: randomCreatedDate(),
-//     lastLogin: randomUpdatedDate(),
-//     percentage: 80,
-//     isfilled: true,
-//     status: "PartiallyFilled",
-//     // size: 900,
-//   },
-//   {
-//     id: 2,
-//     name: "Rani Impex",
-//     city: "Chennai",
-//     commodity: "Switch",
-//     price: 25,
-//     quantity: 100,
-//     total: 25000,
-//     dateCreated: randomCreatedDate(),
-//     lastLogin: randomUpdatedDate(),
-//     percentage: 20,
-//     isfilled: true,
-//     status: "Open",
-//     // size: 25000,
-//   },
-//   {
-//     id: 3,
-//     name: "Bhuvana Exports",
-//     city: "Kovilpatti",
-//     commodity: "Plug",
-//     price: 60,
-//     quantity: 120,
-//     total: 7200,
-//     dateCreated: randomCreatedDate(),
-//     lastLogin: randomUpdatedDate(),
-//     percentage: 60,
-//     isfilled: false,
-//     status: "Rejected",
-//     // size: 2450,
-//   },
-//   {
-//     id: 4,
-//     name: "Uma AutoMobiles",
-//     city: "Sivakasi",
-//     commodity: "PVC Pipe",
-//     price: 1200,
-//     quantity: 1000,
-//     total: 1200000,
-//     dateCreated: randomCreatedDate(),
-//     lastLogin: randomUpdatedDate(),
-//     percentage: 5,
-//     isfilled: true,
-//     status: "Filled",
-//     // size: 1500,
-//   },
-//   {
-//     id: 5,
-//     name: "Pandi Chemicals",
-//     city: "Tirupur",
-//     commodity: "Wire",
-//     price: 150,
-//     quantity: 50,
-//     total: 12500,
-//     dateCreated: randomCreatedDate(),
-//     lastLogin: randomUpdatedDate(),
-//     percentage: 30,
-//     isfilled: true,
-//     status: "PartiallyFilled",
-//     // size: 413,
-//   },
-// ];

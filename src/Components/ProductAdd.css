@@ -93,3 +93,12 @@ h4{
     display: flex;
     justify-content:space-evenly;
 }
+
+.container-select {
+    width: 300px;
+    /* border-radius: 10px;
+    outline: none;
+    border: 1px solid #5d5b57; */
+    /* padding: 10px; */
+
+}

@@ -14,7 +14,7 @@ function AddNew() {
     const handleSubmit = (e) => {
         e.preventDefault();
         // setErrors(Validation(enquiryEntries));
-        axios.post("http://localhost:2318/newentry", {
+        axios.post("http://localhost:2318/entry", {
           Customer: customer,
           CustomerPartNo: partNo,
           Description: description,
