@@ -26,13 +26,24 @@ const getHoverBackgroundColor = (color, mode) =>
 export default function Utility() {
   const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
+  const [activityData, setActivityData] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:2318/entry").then((response) => {
       console.log("TableData: " + JSON.stringify(response.data));
       setTableData(response.data);
     })
+    axios.get("http://localhost:2318/activity"). then((response) => {
+      console.log("Activity Data: " + JSON.stringify(response.data));
+      setActivityData(response.data);
+    })
   }, []);
+  console.log("Activity Data: " + JSON.stringify(activityData));
+  // const totalValue = () => {
+  //   tableData.map((row) => {
+  //     row.
+  //   })
+  // }
   // console.log("tabledata " + JSON.stringify(tableData))
   return (
     <div style={{ height: 500, width: "100%" }}>
@@ -117,7 +128,7 @@ export default function Utility() {
         <DataGrid
           getRowClassName={(params) => `super-app-theme--${params.row.status}`}
           rows={tableData}
-          getRowId={(row) => row.Id}
+          getRowId={(row) => row.PartsId}
           columns={columns}
           experimentalFeatures={{ newEditingApi: true, aggregation: true }}
           onCellEditStop={(params, event) => {
@@ -175,8 +186,8 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 });
 
 const columns = [
-  { field: "Id", headerName: "S.No", width: 100,
-  filterable: false, renderCell: (index) => index.api.getRowIndex(index.row.Id) + 1,
+  { field: "PartsId", headerName: "S.No", width: 100,
+  filterable: false, renderCell: (index) => index.api.getRowIndex(index.row.PartsId) + 1,
   editable: true 
 },
   { field: "Customer", headerName: "Customer", width: 180, editable: true },

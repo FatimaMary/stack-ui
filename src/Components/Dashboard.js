@@ -26,19 +26,35 @@ const getHoverBackgroundColor = (color, mode) =>
 export default function Dashboard() {
   const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
+  const [activityData, setActivityData] = useState([]);
+  const [totalBinCount, setTotalBinCount] = useState();
 
   useEffect(() => {
     axios.get("http://localhost:2318/entry").then((response) => {
       console.log("TableData: " + JSON.stringify(response.data));
       setTableData(response.data);
     })
+    axios.get("http://localhost:2318/activity"). then((response) => {
+      console.log("Activity Data: " + JSON.stringify(response.data));
+      setActivityData(response.data);
+    })
   }, []);
-  // console.log("tabledata " + JSON.stringify(tableData))
+  console.log("tabledata " + JSON.stringify(tableData))
 
   const GotoAdd = () => {
     navigate("/addnew")
   }
-  
+
+  // const binValue = activityData.map((total) => {
+  //   if(CustomerPartNo === total.CustomerPartNo){
+  //     BinCount += BinCount
+  //   } 
+  // });
+
+  // const noofbins = (binValue, result) => {
+  //   binValue = binValue + result
+  // }
+
 
   return (
     <div style={{ height: 500, width: "100%" }}>
@@ -131,7 +147,7 @@ export default function Dashboard() {
         <DataGrid
           getRowClassName={(params) => `super-app-theme--${params.row.status}`}
           rows={tableData}
-          getRowId={(row) => row.Id}
+          getRowId={(row) => row.PartsId}
           columns={columns}
           experimentalFeatures={{ newEditingApi: true, aggregation: true }}
           onCellEditStop={(params, event) => {
@@ -187,10 +203,15 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
+// const conditionalColoring = (props: any): any => {
+//   if(props.MinStock  > 300) {
+//     return(<span style={{backgroundColor: 'red'}}></span>)
+//   }
+// }
 
 const columns = [
-  { field: "Id", headerName: "S.No", width: 100,
-  filterable: false, renderCell: (index) => index.api.getRowIndex(index.row.Id) + 1,
+  { field: "PartsId", headerName: "S.No", width: 100,
+  filterable: false, renderCell: (index) => index.api.getRowIndex(index.row.PartsId) + 1,
   // editable: true 
 },
   { field: "Customer", headerName: "Customer", width: 180 },
@@ -232,45 +253,45 @@ const columns = [
     width: 90,
   },
   {
-    field: "currentstock",
+    field: "currentStock",
     headerName: "Current Stock",
     type: "number",
     width: 100,
     editable: true
   },
   {
-    field: "noofbins",
+    field: "NoofBins",
     headerName: "No.of Bins",
     type: "number",
     width: 100,
   },
   {
-    field: "Levelindicator",
+    field: "levelindicator",
     headerName: "Level Indicator",
     type: "number",
     width: 180,
-    cellClassName: (params) => {
-      if (params.value == null) {
-        return "";
-      } else if(params.value < MinStock.value) {
-        return clsx("super-app", {
-          red
-        })
-      }
-
-      return clsx("super-app", {
-        red: params.value < MinStock.value,
-        yellow: params.value <= (MinStock.value + 10%(MinStock)),
-        green: params.value >= (MinStock.value + 10%(MinStock)),
-      });
-    },
-    // 
-    valueFormatter: ({ value }) => {
-      if (!value) {
-        return value;
-      }
-      return currencyFormatter.format(value);
-    },
+    editable: true,
+    // cellRenderer: conditionalColoring,
+    // cellClassName: (params) => {
+    //   if (params.value == null) {
+    //     return "";
+    //   } else if(params.value < MinStock.value) {
+    //     return clsx("super-app", {
+    //       red
+    //     })
+    //   }
+    //   return clsx("super-app", {
+    //     red: params.value < MinStock.value,
+    //     yellow: params.value <= (MinStock.value + 10%(MinStock)),
+    //     green: params.value >= (MinStock.value + 10%(MinStock)),
+    //   });
+    // },
+    // valueFormatter: ({ value }) => {
+    //   if (!value) {
+    //     return value;
+    //   }
+    //   return currencyFormatter.format(value);
+    // },
   },
 
   // {

@@ -22,6 +22,7 @@ function CheckIn() {
 
     useEffect(() => {
       axios.get("http://localhost:2318/entry").then((response) => {
+        console.log("get response data: " + JSON.stringify(response.data))
             setCustomerPartDetails(response.data);
        })
     }, []);
@@ -35,7 +36,7 @@ function CheckIn() {
     //         setCustomer(singleCustomerPartDetail.Customer);
     //         setPackingStandard(singleCustomerPartDetail.PackingStandard);
     //         setLocation(singleCustomerPartDetail.Location);
-    //         setSelectdId(singleCustomerPartDetail.Id)
+    //         setSelectdId(singleCustomerPartDetail.PartsId)
     //           console.log("Description: " + singleCustomerPartDetail.Description)
     //           console.log("ID: "+singleCustomerPartDetail.Id);
     //       } else if  (e.target.value === singleCustomerPartDetail.Description) {
@@ -43,7 +44,7 @@ function CheckIn() {
     //         setCustomer(singleCustomerPartDetail.Customer);
     //         setPackingStandard(singleCustomerPartDetail.PackingStandard);
     //         setLocation(singleCustomerPartDetail.Location);
-    //         setSelectdId(singleCustomerPartDetail.Id)
+    //         setSelectdId(singleCustomerPartDetail.PartsId)
     //       }
     //   })
     // }
@@ -59,7 +60,7 @@ function CheckIn() {
           setCustomer(singleCustomerPartDetail.Customer);
           setPackingStandard(singleCustomerPartDetail.PackingStandard);
           setLocation(singleCustomerPartDetail.Location);
-          setSelectdId(singleCustomerPartDetail.Id)
+          setSelectdId(singleCustomerPartDetail.PartsId)
         }})
     }
 
@@ -77,7 +78,7 @@ function CheckIn() {
         Action: `checkin`,
         BinCount: binCount,
         Location: location,
-        StockId: selectdId,
+        PartsId: selectdId,
         
       }).then((response) => {
         console.log(response);
